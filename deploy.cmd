@@ -18,7 +18,7 @@ echo Handling .NET Web Application deployment.
 ::set NUGET_PACKAGES=%HOME%\.nuget
 
 :: For now, we need a myget feed since RC2 packages are not yet released
-:: call :ExecuteCmd .nuget\nuget.exe restore -source https://myget.org/f/aspnetrelease/api/v3/index.json -source https://api.nuget.org/v3/index.json -packagesavemode nuspec
+:: call :ExecuteCmd .nuget\nuget.exe restore -s https://myget.org/f/aspnetrelease/api/v3/index.json -s https://api.nuget.org/v3/index.json -packagesavemode nuspec
 
 call :ExecuteCmd %HOME%\dotnet\dotnet.exe restore -source https://myget.org/f/aspnetrelease/api/v3/index.json -source https://api.nuget.org/v3/index.json
 call :ExecuteCmd %HOME%\dotnet\dotnet.exe publish

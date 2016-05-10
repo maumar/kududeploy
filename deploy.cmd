@@ -6,18 +6,16 @@ set NUGET_XMLDOC_MODE=skip
 :: Make the NuGet packages go in a persisted folder instead of %USERPROFILE%, which on Azure goes in Temp space
 set NUGET_PACKAGES=%HOME%\nuget
  
-:: For now, we need a myget feed since RC2 packages are not yet released
-:: call :ExecuteCmd .nuget\nuget.exe restore -source https://myget.org/f/aspnetrelease/api/v3/index.json -source https://api.nuget.org/v3/index.json -packagesavemode nuspec
-
 call :ExecuteCmd %HOME%\dotnet\dotnet.exe restore -s https://myget.org/f/aspnetrelease/api/v3/index.json -s https://api.nuget.org/v3/index.json -s https://dotnet.myget.org/F/cli-deps/api/v3/index.json
 
 IF !ERRORLEVEL! NEQ 0 goto error
+
+echo publishing
  
-call :ExecuteCmd %HOME%\dotnet\dotnet.exe publish --output "%DEPLOYMENT_TEMP%"
-::call :ExecuteCmd dotnet publish --output "%DEPLOYMENT_TEMP%"
- 
+call :ExecuteCmd %HOME%\dotnet\dotnet.exe publish
+:: --output "%DEPLOYMENT_TEMP%"
+
 ::call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 -f "%DEPLOYMENT_TEMP%" -t "%DEPLOYMENT_TARGET%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd"
- IF !ERRORLEVEL! NEQ 0 goto error
  
 goto end
  

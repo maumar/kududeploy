@@ -8,14 +8,11 @@ set NUGET_PACKAGES=%HOME%\nuget
  
 call :ExecuteCmd %HOME%\dotnet\dotnet.exe restore -s https://myget.org/f/aspnetrelease/api/v3/index.json -s https://api.nuget.org/v3/index.json -s https://dotnet.myget.org/F/cli-deps/api/v3/index.json
 
-IF !ERRORLEVEL! NEQ 0 goto error
-
 echo publishing
  
-call :ExecuteCmd %HOME%\dotnet\dotnet.exe publish
-:: --output "%DEPLOYMENT_TEMP%"
+call :ExecuteCmd %HOME%\dotnet\dotnet.exe publish --output "%DEPLOYMENT_TEMP%"
 
-::call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 -f "%DEPLOYMENT_TEMP%" -t "%DEPLOYMENT_TARGET%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd"
+call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 -f "%DEPLOYMENT_TEMP%" -t "%DEPLOYMENT_TARGET%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd"
  
 goto end
  
